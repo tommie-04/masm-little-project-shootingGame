@@ -1,16 +1,15 @@
 ; ============================================================
 ; File     : main.asm
 ; ============================================================
-
 INCLUDE Irvine32.inc
 
 .MODEL flat, stdcall
 SetConsoleOutputCP PROTO :DWORD
 
-EXTERN DisplayScore@0:PROC
-EXTERN MoveCharacter@0:PROC
-EXTERN MoveEnemy@0:PROC
-EXTERN Shoot@0:PROC
+EXTERN _DisplayScore:PROC
+EXTERN _MoveCharacter:PROC
+EXTERN _MoveEnemy:PROC
+EXTERN _Shoot:PROC
 
 .data
 
@@ -55,7 +54,7 @@ main PROC
     div bl
     mov UPPER_LIMIT, al
 
-    call DisplayScore@0
+    call _DisplayScore
 
     mov dh, curr_Y
     mov dl, curr_X
@@ -76,7 +75,7 @@ waitForKey:
     mov edi, OFFSET E1_Y
     mov ebx, OFFSET E1_X_dir
     mov ecx, OFFSET E1_Y_dir
-    call MoveEnemy@0
+    call _MoveEnemy
 
 NextEnemy2:
     mov al, E2_X
@@ -88,7 +87,7 @@ NextEnemy2:
     mov edi, OFFSET E2_Y
     mov ebx, OFFSET E2_X_dir
     mov ecx, OFFSET E2_Y_dir
-    call MoveEnemy@0
+    call _MoveEnemy
 
 NextEnemy3:
     mov al, E3_X
@@ -100,12 +99,12 @@ NextEnemy3:
     mov edi, OFFSET E3_Y
     mov ebx, OFFSET E3_X_dir
     mov ecx, OFFSET E3_Y_dir
-    call MoveEnemy@0
+    call _MoveEnemy
 
 EndEnemyLoop:
     mov eax, 100
     call Delay
-    call MoveCharacter@0
+    call _MoveCharacter
 
     call ReadKey
     jnz  keyPressed
@@ -127,7 +126,7 @@ keyPressed:
     jmp waitForKey
 
 ShootAction:
-    call Shoot@0
+    call _Shoot
     jmp  waitForKey
 
 upArrow:

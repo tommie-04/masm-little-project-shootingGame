@@ -1,18 +1,17 @@
 ; ============================================================
 ; File     : Shoot.asm
 ; ============================================================
-
 INCLUDE Irvine32.inc
 INCLUDE globals.inc
 
-EXTERN CheckHit@0:PROC
-EXTERN DisplayScore@0:PROC
+EXTERN _CheckHit:PROC
+EXTERN _DisplayScore:PROC
 
-PUBLIC Shoot@0
+PUBLIC _Shoot
 
 .code
 
-Shoot@0 PROC
+_Shoot PROC
     push eax
     push ebx
     push ecx
@@ -46,7 +45,7 @@ ShootMoveLoop:
     push edi
     mov esi, OFFSET E1_X
     mov edi, OFFSET E1_Y
-    call CheckHit@0
+    call _CheckHit
     jz HitFound
     pop edi
     pop esi
@@ -55,7 +54,7 @@ ShootMoveLoop:
     push edi
     mov esi, OFFSET E2_X
     mov edi, OFFSET E2_Y
-    call CheckHit@0
+    call _CheckHit
     jz HitFound
     pop edi
     pop esi
@@ -64,7 +63,7 @@ ShootMoveLoop:
     push edi
     mov esi, OFFSET E3_X
     mov edi, OFFSET E3_Y
-    call CheckHit@0
+    call _CheckHit
     jz HitFound
     pop edi
     pop esi
@@ -86,13 +85,13 @@ FinalErase:
     mov al, 32
     call WriteChar
 
-    call DisplayScore@0
+    call _DisplayScore
 
     pop edx
     pop ecx
     pop ebx
     pop eax
     ret
-Shoot@0 ENDP
+_Shoot ENDP
 
 END

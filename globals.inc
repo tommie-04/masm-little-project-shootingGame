@@ -1,6 +1,7 @@
 ; ============================================================
 ; File     : globals.inc
-; Purpose  : Shared EXTERN declarations for all modules.
+; Purpose  : Shared EXTERN data declarations for all modules.
+;            Include this in every .asm module.
 ; ============================================================
 
 EXTERN curr_X:SBYTE

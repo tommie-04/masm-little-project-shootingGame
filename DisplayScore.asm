@@ -1,15 +1,14 @@
 ; ============================================================
 ; File     : DisplayScore.asm
 ; ============================================================
-
 INCLUDE Irvine32.inc
 INCLUDE globals.inc
 
-PUBLIC DisplayScore@0
+PUBLIC _DisplayScore
 
 .code
 
-DisplayScore@0 PROC
+_DisplayScore PROC
     push eax
     push ebx
     push ecx
@@ -30,6 +29,6 @@ DisplayScore@0 PROC
     pop ebx
     pop eax
     ret
-DisplayScore@0 ENDP
+_DisplayScore ENDP
 
 END

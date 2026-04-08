@@ -1,15 +1,14 @@
 ; ============================================================
 ; File     : CheckHit.asm
 ; ============================================================
-
 INCLUDE Irvine32.inc
 INCLUDE globals.inc
 
-PUBLIC CheckHit@0
+PUBLIC _CheckHit
 
 .code
 
-CheckHit@0 PROC
+_CheckHit PROC
     push ebx
     push ecx
     push edx
@@ -39,6 +38,6 @@ HitReturn:
     pop ecx
     pop ebx
     ret
-CheckHit@0 ENDP
+_CheckHit ENDP
 
 END

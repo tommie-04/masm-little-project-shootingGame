@@ -1,15 +1,14 @@
 ; ============================================================
 ; File     : MoveCharacter.asm
 ; ============================================================
-
 INCLUDE Irvine32.inc
 INCLUDE globals.inc
 
-PUBLIC MoveCharacter@0
+PUBLIC _MoveCharacter
 
 .code
 
-MoveCharacter@0 PROC
+_MoveCharacter PROC
     mov dh, curr_Y
     mov dl, curr_X
     call GotoXY
@@ -45,6 +44,6 @@ BoundaryHit:
 
 MoveReturn:
     ret
-MoveCharacter@0 ENDP
+_MoveCharacter ENDP
 
 END

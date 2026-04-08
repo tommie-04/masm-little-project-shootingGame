@@ -1,15 +1,14 @@
 ; ============================================================
 ; File     : MoveEnemy.asm
 ; ============================================================
-
 INCLUDE Irvine32.inc
 INCLUDE globals.inc
 
-PUBLIC MoveEnemy@0
+PUBLIC _MoveEnemy
 
 .code
 
-MoveEnemy@0 PROC
+_MoveEnemy PROC
     push ebx
     push ecx
     push eax
@@ -98,6 +97,6 @@ EnemyDone:
     pop ecx
     pop ebx
     ret
-MoveEnemy@0 ENDP
+_MoveEnemy ENDP
 
 END
