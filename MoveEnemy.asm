@@ -1,55 +1,31 @@
 ; ============================================================
 ; File     : MoveEnemy.asm
-; Purpose  : Moves a single enemy one step in a randomly chosen
-;            direction while respecting screen boundaries.
-;            Retries with a new random direction on boundary hit.
-;
-; Interface:
-;   IN  ESI = Address of enemy X coordinate (SBYTE)
-;   IN  EDI = Address of enemy Y coordinate (SBYTE)
-;   IN  EBX = Address of enemy X_dir        (SBYTE)
-;   IN  ECX = Address of enemy Y_dir        (SBYTE)
-;   (All four pointer arguments must be set by the caller.)
-;
-; Preserves: EAX, EBX, ECX, ESI, EDI
-; Depends  : Irvine32 (GotoXY, WriteChar, Randomize, RandomRange)
-;            globals.inc (MAX_WIDTH, MAX_HEIGHT)
-; Build    : ml /c /coff MoveEnemy.asm
 ; ============================================================
 
 INCLUDE Irvine32.inc
 INCLUDE globals.inc
 
-PUBLIC MoveEnemy
+PUBLIC MoveEnemy@0
 
 .code
 
-; ------------------------------------------------------------
-; MoveEnemy
-;   1. Erase enemy at its current position
-;   2. Pick a random direction: 0=up, 1=down, 2=left, 3=right
-;   3. Compute proposed new coords
-;   4. If out of bounds → retry step 2
-;   5. Save new coords and draw 'E' at the new position
-; ------------------------------------------------------------
-MoveEnemy PROC
+MoveEnemy@0 PROC
     push ebx
     push ecx
     push eax
     push esi
     push edi
 
-    ; --- Erase current enemy position ---
-    mov dh, byte ptr [EDI]  ; current Y
-    mov dl, byte ptr [ESI]  ; current X
+    mov dh, byte ptr [EDI]
+    mov dl, byte ptr [ESI]
     call GotoXY
-    mov al, 32              ; ASCII space
+    mov al, 32
     call WriteChar
 
 TryDirection:
     call Randomize
     mov eax, 4
-    call RandomRange        ; EAX = 0..3
+    call RandomRange
 
     cmp eax, 0
     je  upDir
@@ -59,40 +35,37 @@ TryDirection:
     je  leftDir
     cmp eax, 3
     je  rightDir
-    jmp TryDirection        ; Safety net (should not reach here)
+    jmp TryDirection
 
 rightDir:
-    mov dl,  1              ; X_dir = +1
-    mov dh,  0              ; Y_dir =  0
+    mov dl,  1
+    mov dh,  0
     jmp calculateMove
 
 upDir:
-    mov dl,  0              ; X_dir =  0
-    mov dh, -1              ; Y_dir = -1
+    mov dl,  0
+    mov dh, -1
     jmp calculateMove
 
 downDir:
-    mov dl,  0              ; X_dir =  0
-    mov dh,  1              ; Y_dir = +1
+    mov dl,  0
+    mov dh,  1
     jmp calculateMove
 
 leftDir:
-    mov dl, -1              ; X_dir = -1
-    mov dh,  0              ; Y_dir =  0
+    mov dl, -1
+    mov dh,  0
 
 calculateMove:
-    ; --- Persist chosen direction ---
-    mov byte ptr [EBX], dl  ; store X_dir
-    mov byte ptr [ECX], dh  ; store Y_dir
+    mov byte ptr [EBX], dl
+    mov byte ptr [ECX], dh
 
-    ; --- Compute proposed new coords ---
-    mov al, byte ptr [ESI]  ; AL = current X
-    mov ah, byte ptr [EDI]  ; AH = current Y
+    mov al, byte ptr [ESI]
+    mov ah, byte ptr [EDI]
 
-    add al, dl              ; new X = X + X_dir
-    add ah, dh              ; new Y = Y + Y_dir
+    add al, dl
+    add ah, dh
 
-    ; --- Boundary check ---
     cmp ah, 0
     jl  InvalidMove
     mov cl, MAX_HEIGHT
@@ -105,19 +78,18 @@ calculateMove:
     cmp al, cl
     jg  InvalidMove
 
-    ; --- Valid move: commit and draw ---
-    mov byte ptr [ESI], al  ; save new X
-    mov byte ptr [EDI], ah  ; save new Y
+    mov byte ptr [ESI], al
+    mov byte ptr [EDI], ah
 
-    mov dh, byte ptr [EDI]  ; Y for GotoXY
-    mov dl, byte ptr [ESI]  ; X for GotoXY
+    mov dh, byte ptr [EDI]
+    mov dl, byte ptr [ESI]
     call GotoXY
-    mov al, 69              ; 'E' — enemy sprite
+    mov al, 69
     call WriteChar
     jmp EnemyDone
 
 InvalidMove:
-    jmp TryDirection        ; Bad move, pick a new direction
+    jmp TryDirection
 
 EnemyDone:
     pop edi
@@ -126,6 +98,6 @@ EnemyDone:
     pop ecx
     pop ebx
     ret
-MoveEnemy ENDP
+MoveEnemy@0 ENDP
 
 END

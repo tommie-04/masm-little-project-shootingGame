@@ -1,15 +1,4 @@
 @echo off
-REM ============================================================
-REM  build.bat  —  Assemble and link ShootingGame (MASM 32-bit)
-REM
-REM  Requirements:
-REM    - MASM (ml.exe) in PATH  (comes with Visual Studio or MASM32 SDK)
-REM    - Irvine32.lib + Irvine32.inc accessible (set IRVINE below)
-REM    - Link against kernel32.lib and user32.lib
-REM
-REM  Usage:  build.bat
-REM ============================================================
-
 SET IRVINE=C:\Irvine
 
 echo [1/6] Assembling main.asm ...
@@ -37,15 +26,11 @@ ml /c /coff /I"%IRVINE%" MoveEnemy.asm
 if errorlevel 1 goto error
 
 echo [Link] Linking all object files ...
-link /SUBSYSTEM:CONSOLE /LIBPATH:"%IRVINE%" ^
-    main.obj DisplayScore.obj CheckHit.obj ^
-    Shoot.obj MoveCharacter.obj MoveEnemy.obj ^
-    Irvine32.lib kernel32.lib user32.lib ^
-    /OUT:ShootingGame.exe
+link /SUBSYSTEM:CONSOLE /LIBPATH:"%IRVINE%" main.obj DisplayScore.obj CheckHit.obj Shoot.obj MoveCharacter.obj MoveEnemy.obj Irvine32.lib kernel32.lib user32.lib /OUT:ShootingGame.exe
 if errorlevel 1 goto error
 
 echo.
-echo  Build successful!  ->  ShootingGame.exe
+echo  Build successful!  -^>  ShootingGame.exe
 goto end
 
 :error

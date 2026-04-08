@@ -1,40 +1,28 @@
 ; ============================================================
 ; File     : DisplayScore.asm
-; Purpose  : Displays the current score at position (col=1, row=0)
-;            of the console window.
-; Interface: DisplayScore PROC  — no arguments, no return value
-; Preserves: EAX, EBX, ECX, EDX
-; Depends  : Irvine32 (GotoXY, WriteString, WriteDec)
-;            globals.inc (score, D_MSG)
-; Build    : ml /c /coff DisplayScore.asm
 ; ============================================================
 
 INCLUDE Irvine32.inc
 INCLUDE globals.inc
 
-PUBLIC DisplayScore
+PUBLIC DisplayScore@0
 
 .code
 
-; ------------------------------------------------------------
-; DisplayScore
-;   Moves cursor to (col=1, row=0), prints the "SCORE: " label
-;   then prints the numeric value of the global `score` DWORD.
-; ------------------------------------------------------------
-DisplayScore PROC
+DisplayScore@0 PROC
     push eax
     push ebx
     push ecx
     push edx
 
-    mov dh, 0               ; Row 0
-    mov dl, 1               ; Col 1
+    mov dh, 0
+    mov dl, 1
     call GotoXY
 
-    mov edx, OFFSET D_MSG   ; "SCORE: "
+    mov edx, OFFSET D_MSG
     call WriteString
 
-    mov eax, score          ; Current score value
+    mov eax, score
     call WriteDec
 
     pop edx
@@ -42,6 +30,6 @@ DisplayScore PROC
     pop ebx
     pop eax
     ret
-DisplayScore ENDP
+DisplayScore@0 ENDP
 
 END
